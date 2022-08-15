@@ -4,9 +4,9 @@
 omit =
     */test*
     */__init__.py
-source = qp_fastp_minimap2
+source = qp_samtools_sort
 branch = True
-include = */qp_fastp_minimap2/*
+include = */qp_samtools_sort/*
 
 [report]
 exclude_lines =
