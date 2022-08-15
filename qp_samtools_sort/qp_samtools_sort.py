@@ -7,7 +7,6 @@
 # -----------------------------------------------------------------------------
 import pandas as pd
 
-from os import environ
 from os.path import basename, join
 from glob import glob
 from itertools import zip_longest
@@ -92,6 +91,7 @@ def _generate_commands(unsorted_bams, nprocs, out_dir):
 
 #     return commands, out_files
 
+
 def samtools_sort(qclient, job_id, parameters, out_dir):
     """Run samtools sort with the given parameters
 
@@ -171,6 +171,7 @@ def samtools_sort(qclient, job_id, parameters, out_dir):
 #     ainfo = [ArtifactInfo('Filtered files', 'per_sample_FASTQ', out_files)]
 
 #     return True, ainfo, ""
+
 
 def samtools_sort_to_array(files, out_dir, params, prep_info, url, job_id):
     """Creates qsub files for submission of per sample fastp and minimap2

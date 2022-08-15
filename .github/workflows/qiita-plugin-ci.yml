@@ -89,7 +89,7 @@ jobs:
           samtools_version=`samtools --version`
           if [[ $samtools_version != *"1.11"* ]]; then echo "wrong samtools version", $samtools_version; exit 1; fi
 
-          configure_qp_samtools_sort --env-script "source ~/.bash_profile; conda activate qp-samtools-sort; export ENVIRONMENT='source ~/.bash_profile; source activate qp-samtools-sort'" --server-cert $QIITA_SERVER_CERT
+          configure_qp_samtools_sort --env-script "source ~/.bash_profile; conda activate qp-samtools-sort" --server-cert $QIITA_SERVER_CERT
 
           echo "Available Qiita plugins"
           ls ~/.qiita_plugins/
