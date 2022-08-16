@@ -129,7 +129,8 @@ def samtools_sort(qclient, job_id, parameters, out_dir):
     # Step 4 generating artifacts
     msg = "Step 4 of 4: Generating new artifact"
     qclient.update_job_step(job_id, msg)
-    ainfo = [ArtifactInfo('sorted files', 'per_sample_BAM', out_files)]
+    # ainfo = [ArtifactInfo('sorted files', 'per_sample_BAM', out_files)]
+    ainfo = [ArtifactInfo('sorted files', 'per_sample_FASTQ', out_files)]
 
     return True, ainfo, ""
 
