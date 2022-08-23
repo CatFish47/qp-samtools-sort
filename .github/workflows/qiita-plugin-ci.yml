@@ -84,7 +84,7 @@ jobs:
           export QIITA_CONFIG_FP=`pwd`/qiita-dev/qiita_core/support_files/config_test_local.cfg
           pip --quiet install -U pip
           pip install https://github.com/CatFish47/qtp-bam/archive/master.zip
-          configure_qtp_bam --env-script "source /home/runner/.profile; conda activate qtp-bam; export ENVIRONMENT="source /home/runner/.profile; conda activate qp-samtools-sort"" --server-cert $QIITA_SERVER_CERT
+          configure_qtp_bam --env-script "source /home/runner/.profile; conda activate qtp-bam" --server-cert $QIITA_SERVER_CERT
 
 
           conda create --yes -n qp-samtools-sort -c bioconda samtools=1.11 python=3.6
@@ -95,7 +95,7 @@ jobs:
           samtools_version=`samtools --version`
           if [[ $samtools_version != *"1.11"* ]]; then echo "wrong samtools version", $samtools_version; exit 1; fi
 
-          configure_qp_samtools_sort --env-script "source /home/runner/.profile; conda activate qp-samtools-sort" --server-cert $QIITA_SERVER_CERT
+          configure_qp_samtools_sort --env-script 'source /home/runner/.profile; conda activate qp-samtools-sort; export ENVIRONMENT="source /home/runner/.profile; conda activate qp-samtools-sort"' --server-cert $QIITA_SERVER_CERT
 
           echo "Available Qiita plugins"
           ls ~/.qiita_plugins/
