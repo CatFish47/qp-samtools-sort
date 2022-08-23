@@ -192,7 +192,7 @@ class SamtoolsSortTests(PluginTestCase):
 
         # exp_out_files = [
         #     f'{out_dir}/CALM_SEP_001974_81_S382_L002.trimmed.unsorted.bam.gz\ttgz\n',
-        #     f'{out_dir}/CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam.gz\ttgz\n']
+        #     f'{out_dir}/CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam.gz\ttgz']
         # self.assertEqual(out_files, exp_out_files)
         print(out_files)
 
