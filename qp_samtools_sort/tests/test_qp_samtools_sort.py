@@ -203,10 +203,10 @@ class SamtoolsSortTests(PluginTestCase):
             f'gunzip {apath}/CALM_SEP_001974_81_S382_L002.trimmed.unsorted.bam.gz; '
             f'samtools sort {apath}/CALM_SEP_001974_81_S382_L002.trimmed.unsorted.bam '
             f'-o {out_dir}/CALM_SEP_001974_81_S382_L002.trimmed.unsorted.bam -@ 2; '
-            f'gzip {out_dir}/CALM_SEP_001974_81_S382_L002.trimmed.unsorted.bam.gz'
-            f'gunzip {apath}/CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam.gz; ',
+            f'gzip {out_dir}/CALM_SEP_001974_81_S382_L002.trimmed.unsorted.bam.gz',
+            f'gunzip {apath}/CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam.gz; '
             f'samtools sort {apath}/CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam '
-            f'-o {out_dir}/CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam -@ 2'
+            f'-o {out_dir}/CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam -@ 2; '
             f'gzip {out_dir}/CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam.gz'
         ]
         self.assertEqual(commands, exp_commands)
