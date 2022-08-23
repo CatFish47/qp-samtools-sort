@@ -46,11 +46,12 @@ class SamtoolsSortTests(PluginTestCase):
                   'out_dir': '/foo/bar/output'}
 
         unsorted_bams_gz = ['untrimmed1.unsorted.bam.gz', 'untrimmed2.unsorted.bam.gz',
-                         'trimmed1.unsorted.bam.gz', 'trimmed2.unsorted.bam.gz']
+                            'trimmed1.unsorted.bam.gz', 'trimmed2.unsorted.bam.gz']
 
         obs = _generate_commands(unsorted_bams_gz, params['nprocs'],
                                  params['out_dir'])
-        cmd = SORT_CMD.format(**params)
+        cmd = SORT_CMD.format(
+            nprocs=params['nprocs'], out_dir_a=params['out_dir'], out_dir_b=params['out_dir'])
         ecmds = []
         for bam_gz in unsorted_bams_gz:
             bam = bam_gz[:-3]
@@ -71,23 +72,21 @@ class SamtoolsSortTests(PluginTestCase):
                 'data_type': 'Metagenomic'}
         pid = self.qclient.post('/apitest/prep_template/', data=data)['prep']
 
+        print(f"pid: {pid}")
+
         # inserting artifacts
         in_dir = mkdtemp()
         self._clean_up_files.append(in_dir)
 
-        # fp1_1 = join(in_dir, 'S22205_S104_L001_R1_001.fastq.gz')
-        # fp1_2 = join(in_dir, 'S22205_S104_L001_R2_001.fastq.gz')
-        # fp2_1 = join(in_dir, 'S22282_S102_L001_R1_001.fastq.gz')
-        # fp2_2 = join(in_dir, 'S22282_S102_L001_R2_001.fastq.gz')
-        ub_1 = join(in_dir, 'CALM_SEP_001974_81_S382_L002.trimmed.unsorted.bam.gz')
-        ub_2 = join(in_dir, 'CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam.gz')
+        ub_1 = join(
+            in_dir, 'CALM_SEP_001974_81_S382_L002.trimmed.unsorted.bam.gz')
+        ub_2 = join(
+            in_dir, 'CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam.gz')
         source_dir = 'qp_samtools_sort/support_files/raw_data'
-        # copyfile(f'{source_dir}/S22205_S104_L001_R1_001.fastq.gz', fp1_1)
-        # copyfile(f'{source_dir}/S22205_S104_L001_R2_001.fastq.gz', fp1_2)
-        # copyfile(f'{source_dir}/S22282_S102_L001_R1_001.fastq.gz', fp2_1)
-        # copyfile(f'{source_dir}/S22282_S102_L001_R2_001.fastq.gz', fp2_2)
-        copyfile(f'{source_dir}/CALM_SEP_001974_81_S382_L002.trimmed.unsorted.bam.gz', ub_1)
-        copyfile(f'{source_dir}/CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam.gz', ub_2)
+        copyfile(
+            f'{source_dir}/CALM_SEP_001974_81_S382_L002.trimmed.unsorted.bam.gz', ub_1)
+        copyfile(
+            f'{source_dir}/CALM_SEP_001974_82_S126_L001.trimmed.unsorted.bam.gz', ub_2)
 
         data = {
             'filepaths': dumps([
@@ -99,6 +98,8 @@ class SamtoolsSortTests(PluginTestCase):
         aid = self.qclient.post('/apitest/artifact/', data=data)['artifact']
 
         self.params['input'] = aid
+
+        print(f"artifact id: {aid}")
 
         data = {'user': 'demo@microbio.me',
                 'command': dumps([plugin_details['name'],
@@ -117,6 +118,8 @@ class SamtoolsSortTests(PluginTestCase):
 
         # Get the artifact filepath information
         artifact_info = self.qclient.get("/qiita_db/artifacts/%s/" % aid)
+
+        print(f"artifact info: {artifact_info}")
 
         # Get the artifact metadata
         prep_info = self.qclient.get('/qiita_db/prep_template/%s/' % pid)

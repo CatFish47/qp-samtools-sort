@@ -19,14 +19,14 @@ FINISH_MEMORY = '10g'
 FINISH_WALLTIME = '10:00:00'
 MAX_RUNNING = 8
 
-SORT_CMD = 'gunzip %s; samtools sort %s -o {out_dir}/%s -@ {nprocs}; gzip {out_dir}/%s'
+SORT_CMD = 'gunzip %s; samtools sort %s -o {out_dir_a}/%s -@ {nprocs}; gzip {out_dir_b}/%s'
 
 def _generate_commands(unsorted_bams_gz, nprocs, out_dir):
     """Helper function to generate commands and facilite testing"""
     files = unsorted_bams_gz
 
     cmd = SORT_CMD
-    command = cmd.format(nprocs=nprocs, out_dir=out_dir)
+    command = cmd.format(nprocs=nprocs, out_dir_a=out_dir, out_dir_b=out_dir)
 
     out_files = []
     commands = []
