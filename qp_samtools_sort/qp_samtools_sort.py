@@ -8,8 +8,6 @@
 import pandas as pd
 
 from os.path import basename, join
-from glob import glob
-from itertools import zip_longest
 
 from qiita_client import ArtifactInfo
 
@@ -19,7 +17,7 @@ FINISH_MEMORY = '10g'
 FINISH_WALLTIME = '10:00:00'
 MAX_RUNNING = 8
 
-GUNZIP_CMD = 'gunzip %s' 
+GUNZIP_CMD = 'gunzip %s'
 SORT_CMD = 'samtools sort %s -o {out_dir_a}/%s -@ {nprocs}'
 GZIP_CMD = 'gzip {out_dir_b}/%s'
 COMBINED_CMD = f'{GUNZIP_CMD}; {SORT_CMD}; {GZIP_CMD}'
