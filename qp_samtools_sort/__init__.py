@@ -19,13 +19,13 @@ THREADS = 15
 plugin = QiitaPlugin(**plugin_details)
 
 # Define the command
-# req_params = {'input': ('artifact', ['per_sample_BAM'])}
-req_params = {'input': ('artifact', ['per_sample_FASTQ'])}
+req_params = {'input': ('artifact', ['BAM'])}
+# req_params = {'input': ('artifact', ['per_sample_FASTQ'])}
 opt_params = {
     'threads': ['integer', f'{THREADS}']}
 
-# outputs = {'Filtered files': 'per_sample_BAM'}
-outputs = {'Filtered files': 'per_sample_FASTQ'}
+outputs = {'Sorted files': 'BAM'}
+# outputs = {'Filtered files': 'per_sample_FASTQ'}
 default_params = {
     'default params': {'threads': THREADS}
 }
