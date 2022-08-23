@@ -9,7 +9,6 @@
 from qiita_client import QiitaPlugin, QiitaCommand
 from .qp_samtools_sort import samtools_sort
 from .utils import plugin_details
-from os.path import splitext
 
 
 THREADS = 15

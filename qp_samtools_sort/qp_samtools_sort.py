@@ -19,13 +19,17 @@ FINISH_MEMORY = '10g'
 FINISH_WALLTIME = '10:00:00'
 MAX_RUNNING = 8
 
-SORT_CMD = 'gunzip %s; samtools sort %s -o {out_dir_a}/%s -@ {nprocs}; gzip {out_dir_b}/%s'
+GUNZIP_CMD = 'gunzip %s' 
+SORT_CMD = 'samtools sort %s -o {out_dir_a}/%s -@ {nprocs}'
+GZIP_CMD = 'gzip {out_dir_b}/%s'
+COMBINED_CMD = f'{GUNZIP_CMD}; {SORT_CMD}; {GZIP_CMD}'
+
 
 def _generate_commands(unsorted_bams_gz, nprocs, out_dir):
     """Helper function to generate commands and facilite testing"""
     files = unsorted_bams_gz
 
-    cmd = SORT_CMD
+    cmd = COMBINED_CMD
     command = cmd.format(nprocs=nprocs, out_dir_a=out_dir, out_dir_b=out_dir)
 
     out_files = []
@@ -36,12 +40,9 @@ def _generate_commands(unsorted_bams_gz, nprocs, out_dir):
         fname = fname_gz[:-3]
         bam = bam_gz[:-3]
         out_files.append((f'{out_dir}/{fname_gz}', 'tgz'))
-        print(f"fname_gz: {fname_gz}, fname: {fname}, bam_gz: {bam_gz}, bam: {bam}")
 
         cmd = command % (bam_gz, bam, fname, fname_gz)
         commands.append(cmd)
-
-    print(f"out_files: {out_files}")
 
     return commands, out_files
 
@@ -122,7 +123,8 @@ def samtools_sort_to_array(files, out_dir, params, prep_info, url, job_id):
     # Note that for processing we don't actually need the run_prefix so
     # we are not going to use it and simply loop over the ordered
     # fwd_seqs/rev_seqs
-    commands, out_files = _generate_commands(files['tgz'], params['threads'], out_dir)
+    commands, out_files = _generate_commands(files['tgz'],
+                                             params['threads'], out_dir)
 
     # writing the job array details
     details_name = join(out_dir, 'samtools_sort.array-details')
