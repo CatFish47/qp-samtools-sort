@@ -55,7 +55,7 @@ class SamtoolsSortTests(PluginTestCase):
         for bam_gz in unsorted_bams_gz:
             bam = bam_gz[:-3]
             ecmds.append(cmd % (bam_gz, bam, bam, bam_gz))
-        eof = [(f'{params["out_dir"]}/{bam}', 'sorted')
+        eof = [(f'{params["out_dir"]}/{bam}', 'tgz')
                for bam in unsorted_bams_gz]
         self.assertCountEqual(obs[0], ecmds)
         self.assertCountEqual(obs[1], eof)
@@ -113,7 +113,7 @@ class SamtoolsSortTests(PluginTestCase):
         self._clean_up_files.append(out_dir)
 
         # adding extra parameters
-        # self.params['environment'] = environ["ENVIRONMENT"]
+        self.params['environment'] = environ["ENVIRONMENT"]
 
         # Get the artifact filepath information
         artifact_info = self.qclient.get("/qiita_db/artifacts/%s/" % aid)
