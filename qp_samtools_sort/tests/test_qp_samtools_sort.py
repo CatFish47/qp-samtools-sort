@@ -208,11 +208,11 @@ class SamtoolsSortTests(PluginTestCase):
             f'gunzip {apath}/{fname_1}.trimmed.unsorted.bam.gz; '
             f'samtools sort {apath}/{fname_1}.trimmed.unsorted.bam '
             f'-o {out_dir}/{fname_1}.trimmed.unsorted.bam -@ 2; '
-            f'gzip {out_dir}/{fname_1}.trimmed.unsorted.bam.gz\n',
+            f'gzip {out_dir}/{fname_1}.trimmed.unsorted.bam\n',
             f'gunzip {apath}/{fname_2}.trimmed.unsorted.bam.gz; '
             f'samtools sort {apath}/{fname_2}.trimmed.unsorted.bam '
             f'-o {out_dir}/{fname_2}.trimmed.unsorted.bam -@ 2; '
-            f'gzip {out_dir}/{fname_2}.trimmed.unsorted.bam.gz'
+            f'gzip {out_dir}/{fname_2}.trimmed.unsorted.bam'
         ]
         self.assertEqual(commands, exp_commands)
 

@@ -39,7 +39,7 @@ def _generate_commands(unsorted_bams_gz, nprocs, out_dir):
         bam = bam_gz[:-3]
         out_files.append((f'{out_dir}/{fname_gz}', 'tgz'))
 
-        cmd = command % (bam_gz, bam, fname, fname_gz)
+        cmd = command % (bam_gz, bam, fname, fname)
         commands.append(cmd)
 
     return commands, out_files
