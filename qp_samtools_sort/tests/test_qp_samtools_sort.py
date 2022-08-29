@@ -57,7 +57,7 @@ class SamtoolsSortTests(PluginTestCase):
         ecmds = []
         for bam_gz in unsorted_bams_gz:
             bam = bam_gz[:-3]
-            ecmds.append(cmd % (bam_gz, bam, bam, bam_gz))
+            ecmds.append(cmd % (bam_gz, bam, bam, bam))
         eof = [(f'{params["out_dir"]}/{bam}', 'tgz')
                for bam in unsorted_bams_gz]
         self.assertCountEqual(obs[0], ecmds)
