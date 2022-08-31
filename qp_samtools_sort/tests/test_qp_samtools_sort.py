@@ -18,7 +18,7 @@ from qp_samtools_sort import plugin
 from qp_samtools_sort.utils import plugin_details
 from qp_samtools_sort.qp_samtools_sort import (
     _generate_commands, samtools_sort_to_array,
-    COMBINED_CMD)
+    SORT_CMD)
 
 
 class SamtoolsSortTests(PluginTestCase):
@@ -44,22 +44,21 @@ class SamtoolsSortTests(PluginTestCase):
         params = {'nprocs': 2,
                   'out_dir': '/foo/bar/output'}
 
-        unsorted_bams_gz = ['untrimmed1.unsorted.bam.gz',
-                            'untrimmed2.unsorted.bam.gz',
-                            'trimmed1.unsorted.bam.gz',
-                            'trimmed2.unsorted.bam.gz']
+        unsorted_bams = ['untrimmed1.unsorted.bam',
+                            'untrimmed2.unsorted.bam',
+                            'trimmed1.unsorted.bam',
+                            'trimmed2.unsorted.bam']
 
-        obs = _generate_commands(unsorted_bams_gz, params['nprocs'],
+        obs = _generate_commands(unsorted_bams, params['nprocs'],
                                  params['out_dir'])
-        cmd = COMBINED_CMD.format(
+        cmd = SORT_CMD.format(
             nprocs=params['nprocs'], out_dir_a=params['out_dir'],
             out_dir_b=params['out_dir'])
         ecmds = []
-        for bam_gz in unsorted_bams_gz:
-            bam = bam_gz[:-3]
-            ecmds.append(cmd % (bam_gz, bam, bam, bam))
-        eof = [(f'{params["out_dir"]}/{bam}', 'tgz')
-               for bam in unsorted_bams_gz]
+        for bam in unsorted_bams:
+            ecmds.append(cmd % (bam, bam))
+        eof = [(f'{params["out_dir"]}/{bam}', 'bam')
+               for bam in unsorted_bams]
         self.assertCountEqual(obs[0], ecmds)
         self.assertCountEqual(obs[1], eof)
 
@@ -84,19 +83,19 @@ class SamtoolsSortTests(PluginTestCase):
         fname_2 = 'CALM_SEP_001974_82_S126_L001'
 
         ub_1 = join(
-            in_dir, f'{fname_1}.trimmed.unsorted.bam.gz')
+            in_dir, f'{fname_1}.trimmed.unsorted.bam')
         ub_2 = join(
-            in_dir, f'{fname_2}.trimmed.unsorted.bam.gz')
+            in_dir, f'{fname_2}.trimmed.unsorted.bam')
         source_dir = 'qp_samtools_sort/support_files/raw_data'
         copyfile(
-            f'{source_dir}/{fname_1}.trimmed.unsorted.bam.gz', ub_1)
+            f'{source_dir}/{fname_1}.trimmed.unsorted.bam', ub_1)
         copyfile(
-            f'{source_dir}/{fname_2}.trimmed.unsorted.bam.gz', ub_2)
+            f'{source_dir}/{fname_2}.trimmed.unsorted.bam', ub_2)
 
         data = {
             'filepaths': dumps([
-                (ub_1, 'tgz'),
-                (ub_2, 'tgz')]),
+                (ub_1, 'bam'),
+                (ub_2, 'bam')]),
             'type': "BAM",
             'name': "Test artifact",
             'prep': pid}
@@ -196,23 +195,19 @@ class SamtoolsSortTests(PluginTestCase):
         self.assertEqual(finish_qsub, exp_finish_qsub)
 
         exp_out_files = [
-            f'{out_dir}/{fname_1}.trimmed.unsorted.bam.gz\ttgz\n',
-            f'{out_dir}/{fname_2}.trimmed.unsorted.bam.gz\ttgz']
+            f'{out_dir}/{fname_1}.trimmed.unsorted.bam\tbam\n',
+            f'{out_dir}/{fname_2}.trimmed.unsorted.bam\tbam']
         self.assertEqual(out_files, exp_out_files)
         print(out_files)
 
         # the easiest to figure out the location of the artifact input files
         # is to check the first file of the raw forward reads
-        apath = dirname(artifact_info['files']['tgz'][0])
+        apath = dirname(artifact_info['files']['bam'][0])
         exp_commands = [
-            f'gunzip {apath}/{fname_1}.trimmed.unsorted.bam.gz; '
             f'samtools sort {apath}/{fname_1}.trimmed.unsorted.bam '
-            f'-o {out_dir}/{fname_1}.trimmed.unsorted.bam -@ 2; '
-            f'gzip {out_dir}/{fname_1}.trimmed.unsorted.bam\n',
-            f'gunzip {apath}/{fname_2}.trimmed.unsorted.bam.gz; '
+            f'-o {out_dir}/{fname_1}.trimmed.unsorted.bam -@ 2\n',
             f'samtools sort {apath}/{fname_2}.trimmed.unsorted.bam '
-            f'-o {out_dir}/{fname_2}.trimmed.unsorted.bam -@ 2; '
-            f'gzip {out_dir}/{fname_2}.trimmed.unsorted.bam'
+            f'-o {out_dir}/{fname_2}.trimmed.unsorted.bam -@ 2'
         ]
         self.assertEqual(commands, exp_commands)
 
