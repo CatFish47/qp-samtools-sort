@@ -45,9 +45,9 @@ class SamtoolsSortTests(PluginTestCase):
                   'out_dir': '/foo/bar/output'}
 
         unsorted_bams = ['untrimmed1.unsorted.bam',
-                            'untrimmed2.unsorted.bam',
-                            'trimmed1.unsorted.bam',
-                            'trimmed2.unsorted.bam']
+                         'untrimmed2.unsorted.bam',
+                         'trimmed1.unsorted.bam',
+                         'trimmed2.unsorted.bam']
 
         obs = _generate_commands(unsorted_bams, params['nprocs'],
                                  params['out_dir'])
